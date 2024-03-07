@@ -67,6 +67,27 @@ func GetClipboardItems(c *gin.Context) {
 	c.JSON(http.StatusOK, clipboardItems)
 }
 
+// GetTotalClipboardItems handles GET requests to fetch the total count of clipboard items.
+func GetTotalClipboardItems(c *gin.Context) {
+	// Create a context with a timeout to ensure the request does not hang indefinitely
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+
+	// Using an empty bson.D{} as filter condition to count all documents in the collection
+	filter := bson.D{}
+
+	// Retrieve the total number of documents that match the filter criteria
+	total, err := database.ClipboardCollection.CountDocuments(ctx, filter)
+	if err != nil {
+		// If an error occurs, return an internal server error status and the error message
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get total count: " + err.Error()})
+		return
+	}
+
+	// Return the total count of documents as a JSON response
+	c.JSON(http.StatusOK, gin.H{"total": total})
+}
+
 func getPageAndLimitFromQuery(pageQuery, limitQuery string) (pageValue, error) {
 	page := 1
 	limit := 10

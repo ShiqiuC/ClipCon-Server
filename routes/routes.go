@@ -15,6 +15,7 @@ func SetupRouter() *gin.Engine {
 	{
 		v1.POST("/clipboard", controllers.CreateClipboardItem)
 		v1.GET("/clipboard", controllers.GetClipboardItems)
+		v1.GET("/clipboard/total", controllers.GetTotalClipboardItems)
 	}
 
 	return router
