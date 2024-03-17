@@ -34,7 +34,7 @@ func CreateClipboardItem(c *gin.Context) {
 	}
 
 	clipboardItem.ID = result.InsertedID.(primitive.ObjectID)
-	c.JSON(http.StatusCreated, clipboardItem)
+	c.JSON(http.StatusOK, clipboardItem)
 }
 
 // GetClipboardItems handles GET requests to fetch clipboard content.
